@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <h1>Bienvenue sur le Ptit Coin</h1>
+
+    <select class="form-control" id="categorie">
+        <option value="">=== Afficher par catégorie ===</option>
+
+        {% for categorie in categories %}
+            <option value="{{ categorie.id }}">{{ categorie.nom }}</option>
+        {% endfor %}
+    </select>
+
+    {% for annonce in annonces %}
+        <div class="card my-3">
+            <div class="card-header">
+                <b>{{ annonce.titre }}</b> ~ {{ annonce.categorie.nom }}
+                <b class="float-right">{{ annonce.prix }} €</b>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12 col-md-6 col-lg-4">
+                        {% if annonce.image %}
+                            <img src="{{ annonce.image.url }}" width="200" height="100" class="img-fluid rounded"
+                                 alt="image">
+                        {% else %}
+                            <img src="http://placehold.it/200x100" class="img-fluid rounded" alt="image">
+                        {% endif %}
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-8">
+                        <p class="card-text">{{ annonce.contenu|truncatewords_html:100 }}</p>
+                        <a href="{% url 'annonce_read' annonce.id %}">Lire la suite</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-muted">
+                <p class="float-left">Il a {{ annonce.date|timesince }}</p>
+                <div class="float-right">
+                    <a href="{% url 'annonce_contact' annonce.id %}" class="btn btn-outline-info">Contacter le
+                        vendeur</a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>Aucun article.</p>
+    {% endfor %}
+
+    <script>
+        const select = document.getElementById('categorie');
+        const urlParams = new URLSearchParams(window.location.search);
+        const idCategorie = urlParams.get('id_categorie');
+
+        if (idCategorie) {
+            select.value = idCategorie
+        }
+
+        select.addEventListener('change', event => {
+            const value = event.target.value;
+            window.location = "{% url 'home' %}?id_categorie=" + value;
+
+        })
+    </script>
+{% endblock %}

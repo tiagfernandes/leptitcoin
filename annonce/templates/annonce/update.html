@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <h1>Modification de l'annonce <b>{{ annonce.titre }}</b></h1>
+
+    {% include 'annonce/form.html' %}
+
+    <br/>
+
+    <a href="{% url 'annonce_remove' annonce.id %}" class="btn btn-outline-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cette annonce ?');">Supprimer</a>
+{% endblock %}

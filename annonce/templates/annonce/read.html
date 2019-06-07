@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div class="card">
+        <img src="{{ annonce.image.url }}" class="card-img-top" alt="{{ annonce.image.name }}">
+        <div class="card-body">
+
+            <p class="float-right">{{ annonce.prix }} €</p>
+            <h3 class="card-title">{{ annonce.titre }}</h3>
+            <p class="card-text">{{ annonce.contenu }}</p>
+            <p class="card-text">
+                <small class="text-muted">Il a {{ annonce.date|timesince }}</small>
+            </p>
+        </div>
+    <div class="card-footer">
+        <a href="{% url 'annonce_contact' annonce.id %}" class="btn btn-info">Contacter le vendeur</a>
+        <a href="{% url 'annonce_update' annonce.id %}" class="btn btn-outline-dark float-right">Modifier</a>
+    </div>
+    </div>
+{% endblock %}
